@@ -1,0 +1,40 @@
+{% include 'base.html' %}
+<head>
+    <style>
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .result-heading {
+            margin-bottom: 20px;
+        }
+        .styled-link {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .styled-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+        <div class="results-container">
+            {% if prediction_result == 1 %}
+                <h2 class="result-heading">The Land is suitable for Maize Cultivation</h2>
+            {% else %}
+                <h2 class="result-heading">The Land is not suitable for Maize Cultivation</h2>
+            {% endif %}
+            <a href="{% url 'index' %}" class="styled-link">Back again</a>
+        </div>
+    {% endblock %}
+</body>

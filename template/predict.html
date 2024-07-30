@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Prediction{% endblock %}</title>
+    {% include 'base.html' %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            align-items: center;
+
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .main-heading {
+            font-size: 32px;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+            padding: 20px 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .main-heading {
+                font-size: 24px;
+                padding: 15px 30px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .main-heading {
+                font-size: 20px;
+                padding: 10px 20px;
+            }
+
+            button {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2 class="main-heading">Maize Land Prediction</h2>
+   
+    <div class="form-container">
+        <form action="#" method="POST" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <h2>Fill the form for Prediction</h2>
+            <div class="form-group">
+                <label for="nitrogen">Nitrogen</label>
+                <input type="text" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen in grams" required>
+            </div>
+            <div class="form-group">
+                <label for="phosphorus">Phosphorus</label>
+                <input type="text" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus in grams" required>
+            </div>
+            <div class="form-group">
+                <label for="potassium">Potassium</label>
+                <input type="text" id="potassium" name="potassium" placeholder="Enter potassium in grams" required>
+            </div>
+            <div class="form-group">
+                <label for="temperature">Temperature</label>
+                <input type="text" id="temperature" name="temperature" placeholder="Enter the temperature in degree Celsius" required>
+            </div>
+            <div class="form-group">
+                <label for="humidity">Humidity</label>
+                <input type="text" id="humidity" name="humidity" placeholder="Enter the humidity in grams per cubic meter" required>
+            </div>
+            <div class="form-group">
+                <label for="ph">Ph</label>
+                <input type="text" id="ph" name="ph" placeholder="Enter the pH value from 0.00 to 14.00" required>
+            </div>
+            <div class="form-group">
+                <label for="rainfall">Rainfall</label>
+                <input type="text" id="rainfall" name="rainfall" placeholder="Enter the rainfall in mm" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            const fields = ['nitrogen', 'phosphorus', 'potassium', 'temperature', 'humidity', 'ph', 'rainfall'];
+            for (let i = 0; i < fields.length; i++) {
+                const field = document.getElementById(fields[i]);
+                if (isNaN(field.value) || field.value === '') {
+                    alert(`${field.name.charAt(0).toUpperCase() + field.name.slice(1)} must be a valid number.`);
+                    return false;
+                }
+                if (field.id === 'ph' && (field.value < 0 || field.value > 14)) {
+                    alert("pH must be between 0.00 and 14.00.");
+                    return false;
+                }
+                if (field.id === 'humidity' && field.value < 0) {
+                    alert("Humidity must be 0 or higher.");
+                    return false;
+                }
+                if (field.id === 'temperature' && field.value < 0) {
+                    alert("Temperature must be 0 or higher.");
+                    return false;
+                }
+                if (field.id === 'rainfall' && field.value < 0) {
+                    alert("Rainfall must be 0 or higher.");
+                    return false;
+                }
+                if (field.id === 'potassium' && (field.value < 0 || field.value > 205)) {
+                    alert("Potassium must be 0 to 205.");
+                    return false;
+                }
+                if (field.id === 'nitrogen' && (field.value < 0 || field.value > 140 )) {
+                    alert("Nitrogen must be 0 upto 140.");
+                    return false;
+                }
+                if (field.id === 'phosphorus' && (field.value < 0 || field.value > 145) ) {
+                    alert("Phosphorus must be 0 upto 145.");
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

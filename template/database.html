@@ -1,0 +1,59 @@
+<title>{% block title%} Database {% endblock%}</title>
+{% include 'base.html' %}
+<style>
+    .navbar {
+            width: 100%;
+            background-color: #333;
+    }
+    .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+</style>
+<button>
+  <a href="{% url 'generate_excel' %}" class="button"> Download Excel</a>
+</button>
+<br>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Nitrogen</th>
+        <th scope="col">Phosphorus</th>
+        <th scope="col">Potassium</th>
+        <th scope="col">Temperature</th>
+        <th scope="col">Humidity</th>
+        <th scope="col">Ph</th>
+        <th scope="col">Rainfall</th>
+        <th scope="col">Prediction</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+            {% for data in prediction %}
+
+            <tr>
+                <td>{{ data.nitrogen }}</td>
+                <td>{{ data.phosphorus }}</td>
+                <td>{{ data.potassium }}</td>
+                <td>{{ data.temperature }}</td>
+                <td>{{ data.humidity }}</td>
+                <td>{{ data.ph }}</td>
+                <td>{{ data.rainfall }}</td>
+                <td>{{ data.prediction }}</td>
+            </tr>
+      
+      {% endfor %}
+      
+    </tbody>
+  </table>
+ 
